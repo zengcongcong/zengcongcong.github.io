@@ -525,6 +525,11 @@ body { padding-bottom: 30px; }
     <button onclick="this.parentNode.classList.add('hidden')" aria-label="关闭提示">✕</button>
   </div>
 
+  <div id="voiceTip" class="wechat-tip hidden">
+    <span>🔇 当前浏览器不支持朗读。请换 <b>Chrome / Edge / 手机自带浏览器</b> 打开；或在手机「设置 → 语言和输入法 → 文字转语音」里安装语音引擎。</span>
+    <button onclick="this.parentNode.classList.add('hidden')" aria-label="关闭提示">✕</button>
+  </div>
+
   <!-- 学习页面 -->
   <div id="page-learn" class="page">
     <div class="card">
@@ -1126,6 +1131,9 @@ function resetAllData() {
 // ==================== 启动 ====================
 initLearn();
 if (isWeChat()) document.getElementById('wechatTip').classList.remove('hidden');
+if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+  document.getElementById('voiceTip').classList.remove('hidden');
+}
 // 微信/iOS 需要用户主动点一下屏幕才允许发声：首次点击时先播一段静音，解锁语音权限
 // capture:true 让它先于单词的 onclick 执行，这样第一次点单词就能出声
 document.addEventListener('click', function once() {
